@@ -644,7 +644,8 @@ int getCost(int cardNumber)
 }
 
 int playAdventurer(struct gameState *state){
-  int drawntreasure=0;
+  //int drawntreasure=0; /*ORIGINAL LINE*/
+  int drawntreasure=1;  /*INTENTIONAL BUG*/
   int currentPlayer = whoseTurn(state);
   int cardDrawn;
   int temphand[MAX_HAND];// moved above the if statement
@@ -663,7 +664,7 @@ int playAdventurer(struct gameState *state){
 	  state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
 	  z++;
 	}
-      }
+      } 
       while(z-1>=0){
 	state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
 	z=z-1;
@@ -677,7 +678,8 @@ int playSmithy(struct gameState *state, int handPos){
       //+3 Cards
       for (i = 0; i < 3; i++)
 	{
-	  drawCard(currentPlayer, state);
+//      drawCard(currentPlayer, state); /*ORIGINAL LINE*/
+	  drawCard(currentPlayer+1, state); /*INTENTIONAL BUG*/
 	}
 			
       //discard card from hand
@@ -686,6 +688,28 @@ int playSmithy(struct gameState *state, int handPos){
 }
 
 int playCouncil_Room(struct gameState *state, int handPos){
+  int i;
+  int currentPlayer = whoseTurn(state);
+      //+4 Cards
+      for (i = 0; i < 4; i++)
+	{
+	  drawCard(currentPlayer, state);
+	}
+			
+      //+1 Buy
+      state->numBuys++;
+			
+      //Each other player draws a card
+      for (i = 0; i < state->numPlayers; i++)
+	{
+	  if ( i != currentPlayer )
+	    {
+	      drawCard(i, state);
+	    }
+	}
+			
+      //put played card in played card pile
+      discardCard(handPos, currentPlayer, state, 0);
 			
       return 0;
 }
@@ -696,7 +720,8 @@ int playVillage(struct gameState *state, int handPos){
       drawCard(currentPlayer, state);
 			
       //+2 Actions
-      state->numActions = state->numActions + 2;
+//      state->numActions = state->numActions + 2; /*ORIGINAL LINE*/
+      state->numActions = state->coins + 2; /*INTENTIONAL BUG*/
 			
       //discard played card from hand
       discardCard(handPos, currentPlayer, state, 0);
@@ -729,7 +754,9 @@ int playFeast(struct gameState *state, int choice1){
 	    printf("Cards Left: %d\n", supplyCount(choice1, state));
 	  }
 	}
-	else if (state->coins < getCost(choice1)){
+
+//	else if (state->coins < getCost(choice1)){ /*ORIGINAL LINE*/
+	else if (state->coins > getCost(choice1)){ /*INTENTIONAL BUG*/
 	  printf("That card is too expensive!\n");
 
 	  if (DEBUG){
@@ -767,16 +794,16 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   int i;
   int j;
   int k;
-  int x;
+  //int x;
   int index;
   int currentPlayer = whoseTurn(state);
   int nextPlayer = currentPlayer + 1;
 
   int tributeRevealedCards[2] = {-1, -1};
-  int temphand[MAX_HAND];// moved above the if statement
-  int drawntreasure=0;
-  int cardDrawn;
-  int z = 0;// this is the counter for the temp hand
+  //int temphand[MAX_HAND];// moved above the if statement
+  //int drawntreasure=0;
+  //int cardDrawn;
+  //int z = 0;// this is the counter for the temp hand
   if (nextPlayer > (state->numPlayers - 1)){
     nextPlayer = 0;
   }
@@ -787,7 +814,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     {
     case adventurer:
         playAdventurer(state);
-		break;
+//		break; /*ORIGINAL LINE*/
+		/*INTENTIONAL BUG--no break statement*/
 			
     case council_room:
         playCouncil_Room(state, handPos);
