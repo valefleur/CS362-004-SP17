@@ -23,7 +23,20 @@ testAll: dominion.o testSuite.c
 
 interface.o: interface.h interface.c
 	gcc -c interface.c -g  $(CFLAGS)
-
+	
+# New Rule
+unitTests: dominion.o 
+#unitest1.c unittest2.c unittest3.c unittest4.c cardtest1.c cardtest2.c cardtest3.c cardtest4.c assert.c
+	#gcc -o unitTest1 unittest1.c -g dominion.o rngs.o $(CFLAGS)
+	#TODO either add more gcc lines, or add all unit test files to this line
+	gcc -o unitTests -g unitest1.c unittest2.c unittest3.c unittest4.c cardtest1.c cardtest2.c cardtest3.c cardtest4.c assert.c dominion.o rngs.o $(CFLAGS)
+	
+#New Rule
+runUnitTests: unitTests
+	./unitTests &> unittestresults.out
+	gcov dominion.c >> unittestresult.out
+	cat dominion.c.gcov >> unittestresult.out
+	
 runtests: testDrawCard 
 	./testDrawCard &> unittestresult.out
 	gcov dominion.c >> unittestresult.out
@@ -33,6 +46,7 @@ runtests: testDrawCard
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
 
+#all: playdom player testDrawCard testBuyCard badTestDrawCard unitTests
 all: playdom player testDrawCard testBuyCard badTestDrawCard
 
 clean:
