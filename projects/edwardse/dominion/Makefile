@@ -29,7 +29,8 @@ unitTests: dominion.o
 #unitest1.c unittest2.c unittest3.c unittest4.c cardtest1.c cardtest2.c cardtest3.c cardtest4.c assert.c
 	#gcc -o unitTest1 unittest1.c -g dominion.o rngs.o $(CFLAGS)
 	#TODO either add more gcc lines, or add all unit test files to this line
-	gcc -o unitTests -g unitest1.c unittest2.c unittest3.c unittest4.c cardtest1.c cardtest2.c cardtest3.c cardtest4.c assert.c dominion.o rngs.o $(CFLAGS)
+	#gcc -o unitTests -g unitest1.c unittest2.c unittest3.c unittest4.c cardtest1.c cardtest2.c cardtest3.c cardtest4.c assert.c dominion.o rngs.o $(CFLAGS)
+	gcc -o unitTests -g cardtest1.c dominion.o rngs.o $(CFLAGS)
 	
 #New Rule
 runUnitTests: unitTests
@@ -50,4 +51,4 @@ player: player.c interface.o
 all: playdom player testDrawCard testBuyCard badTestDrawCard
 
 clean:
-	rm -f *.o playdom.exe playdom test.exe test player player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so
+	rm -f *.o unitTests.exe unitTests playdom.exe playdom test.exe test player player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so
