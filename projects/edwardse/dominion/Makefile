@@ -4,7 +4,7 @@ rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
 
 dominion.o: dominion.h dominion.c rngs.o
-	gcc -c dominion.c -g  $(CFLAGS)
+	gcc -c dominion.c -fprofile-arcs -ftest-coverage -Wall -g  $(CFLAGS)
 
 playdom: dominion.o playdom.c
 	gcc -o playdom playdom.c -g dominion.o rngs.o $(CFLAGS)
@@ -33,35 +33,35 @@ unitTests: dominion.o my_assert.c my_assert.h
     
 # New Rule
 unitTest1: unittest1.c dominion.o my_assert.c my_assert.h
-	gcc -o unitTest1 -g unittest1.c my_assert.c dominion.o rngs.o $(CFLAGS)
+	gcc -o unitTest1 -fprofile-arcs -ftest-coverage -Wall -g unittest1.c my_assert.c dominion.o rngs.o $(CFLAGS)
     
 # New Rule
 unitTest2: unittest2.c dominion.o my_assert.c my_assert.h
-	gcc -o unitTest2 -g unittest2.c my_assert.c dominion.o rngs.o $(CFLAGS)
+	gcc -o unitTest2 -fprofile-arcs -ftest-coverage -Wall -g unittest2.c my_assert.c dominion.o rngs.o $(CFLAGS)
     
 # New Rule
 unitTest3: dominion.o my_assert.c my_assert.h
-	gcc -o unitTest3 -g unittest3.c my_assert.c dominion.o rngs.o $(CFLAGS)
+	gcc -o unitTest3 -fprofile-arcs -ftest-coverage -Wall -g unittest3.c my_assert.c dominion.o rngs.o $(CFLAGS)
     
 # New Rule
 unitTest4: dominion.o my_assert.c my_assert.h
-	gcc -o unitTest4 -g unittest4.c my_assert.c dominion.o rngs.o $(CFLAGS)
+	gcc -o unitTest4 -fprofile-arcs -ftest-coverage -Wall -g unittest4.c my_assert.c dominion.o rngs.o $(CFLAGS)
     
 # New Rule
 cardTest1: dominion.o my_assert.c my_assert.h
-	gcc -o cardTest1 -g cardtest1.c my_assert.c dominion.o rngs.o $(CFLAGS)    
+	gcc -o cardTest1 -fprofile-arcs -ftest-coverage -Wall -g cardtest1.c my_assert.c dominion.o rngs.o $(CFLAGS)    
     
 # New Rule
 cardTest2: dominion.o my_assert.c my_assert.h
-	gcc -o cardTest2 -g cardtest2.c my_assert.c dominion.o rngs.o $(CFLAGS)    
+	gcc -o cardTest2 -fprofile-arcs -ftest-coverage -Wall -g cardtest2.c my_assert.c dominion.o rngs.o $(CFLAGS)    
     
 # New Rule
 cardTest3: dominion.o my_assert.c my_assert.h
-	gcc -o cardTest3 -g cardtest3.c my_assert.c dominion.o rngs.o $(CFLAGS)    
+	gcc -o cardTest3 -fprofile-arcs -ftest-coverage -Wall -g cardtest3.c my_assert.c dominion.o rngs.o $(CFLAGS)    
     
 # New Rule
 cardTest4: dominion.o my_assert.c my_assert.h
-	gcc -o cardTest4 -g cardtest4.c my_assert.c dominion.o rngs.o $(CFLAGS)     
+	gcc -o cardTest4 -fprofile-arcs -ftest-coverage -Wall -g cardtest4.c my_assert.c dominion.o rngs.o $(CFLAGS)     
 
 #New Rule
 runUnitTests: unitTest1 unitTest2 unitTest3 unitTest4 cardTest1 cardTest2 cardTest3 cardTest4
