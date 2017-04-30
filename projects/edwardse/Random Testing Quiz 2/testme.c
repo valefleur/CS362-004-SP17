@@ -15,14 +15,19 @@
 
 char inputChar()
 {
-    // TODO: rewrite this function
-    return ' ';
+	//randomly produce ASCII chars between ' ' and ~
+	char character = rand() % 94 + 32;
+    return character;
 }
 
 char *inputString()
 {
-    // TODO: rewrite this function
-    return "reset\0";
+	//flip a coin
+	int coinFlip = rand() % 2 + 1;
+	//if even, send reset command
+	if (coinFlip % 2 == 0) return "reset\0";
+	//if odd, send sorry command
+	else if (coinFlip % 2 == 1) return "sorry\0";
 }
 
 void testme()
@@ -63,5 +68,14 @@ int main(int argc, char *argv[])
 {
     srand(time(NULL));
     testme();
+/*	int i = 0;
+	char c;
+	char *s;
+	for(i=0; i<10; i++){
+		c = inputChar();
+		s = inputString();
+		printf("Iteration %d: c = %c, s = %s\n", i, c, s);
+	}
+	*/
     return 0;
 }
