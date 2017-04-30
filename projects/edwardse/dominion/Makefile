@@ -25,17 +25,55 @@ interface.o: interface.h interface.c
 	gcc -c interface.c -g  $(CFLAGS)
 	
 # New Rule
-unitTests: dominion.o 
-#unitest1.c unittest2.c unittest3.c unittest4.c cardtest1.c cardtest2.c cardtest3.c cardtest4.c assert.c
-	#gcc -o unitTest1 unittest1.c -g dominion.o rngs.o $(CFLAGS)
-	#TODO either add more gcc lines, or add all unit test files to this line
+unitTests: dominion.o my_assert.c my_assert.h
+#unitest1.c unittest2.c unittest3.c unittest4.c cardtest1.c cardtest2.c cardtest3.c cardtest4.c
 	#gcc -o unitTests -g unitest1.c unittest2.c unittest3.c unittest4.c cardtest1.c cardtest2.c cardtest3.c cardtest4.c assert.c dominion.o rngs.o $(CFLAGS)
-	gcc -o unitTests -g cardtest1.c dominion.o rngs.o $(CFLAGS)
+	gcc -o unitTests -g cardtest4.c my_assert.c dominion.o rngs.o $(CFLAGS)
 	
+    
+# New Rule
+unitTest1: unittest1.c dominion.o my_assert.c my_assert.h
+	gcc -o unitTest1 -g unittest1.c my_assert.c dominion.o rngs.o $(CFLAGS)
+    
+# New Rule
+unitTest2: unittest2.c dominion.o my_assert.c my_assert.h
+	gcc -o unitTest2 -g unittest2.c my_assert.c dominion.o rngs.o $(CFLAGS)
+    
+# New Rule
+unitTest3: dominion.o my_assert.c my_assert.h
+	gcc -o unitTest3 -g unittest3.c my_assert.c dominion.o rngs.o $(CFLAGS)
+    
+# New Rule
+unitTest4: dominion.o my_assert.c my_assert.h
+	gcc -o unitTest4 -g unittest4.c my_assert.c dominion.o rngs.o $(CFLAGS)
+    
+# New Rule
+cardTest1: dominion.o my_assert.c my_assert.h
+	gcc -o cardTest1 -g cardtest1.c my_assert.c dominion.o rngs.o $(CFLAGS)    
+    
+# New Rule
+cardTest2: dominion.o my_assert.c my_assert.h
+	gcc -o cardTest2 -g cardtest2.c my_assert.c dominion.o rngs.o $(CFLAGS)    
+    
+# New Rule
+cardTest3: dominion.o my_assert.c my_assert.h
+	gcc -o cardTest3 -g cardtest3.c my_assert.c dominion.o rngs.o $(CFLAGS)    
+    
+# New Rule
+cardTest4: dominion.o my_assert.c my_assert.h
+	gcc -o cardTest4 -g cardtest4.c my_assert.c dominion.o rngs.o $(CFLAGS)     
+
 #New Rule
-runUnitTests: unitTests
-	./unitTests &> unittestresults.out
-	gcov dominion.c >> unittestresult.out
+runUnitTests: unitTest1 unitTest2 unitTest3 unitTest4 cardTest1 cardTest2 cardTest3 cardTest4
+	./unitTest1 &> unittestresult.out
+	./unitTest2 >> unittestresult.out
+	./unitTest3 >> unittestresult.out
+	./unitTest4 >> unittestresult.out
+	./cardTest1 >> unittestresult.out
+	./cardTest2 >> unittestresult.out
+	./cardTest3 >> unittestresult.out
+	./cardTest4 >> unittestresult.out
+	gcov -b -f dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
 	
 runtests: testDrawCard 
@@ -51,4 +89,4 @@ player: player.c interface.o
 all: playdom player testDrawCard testBuyCard badTestDrawCard
 
 clean:
-	rm -f *.o unitTests.exe unitTests playdom.exe playdom test.exe test player player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so
+	rm -f *.o unitTest1 unitTest2 unitTest3 unitTest4 cardTest1 cardTest2 cardTest3 cardTest4 playdom.exe playdom test.exe test player player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so
