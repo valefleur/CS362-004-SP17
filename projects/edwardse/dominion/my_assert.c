@@ -19,11 +19,11 @@
 
 int my_assert(int first, int second){
     if( first == second){
-        printf("PASSED!!!\n");
+        //printf("PASSED!!!\n");
         return 1;
     }
     else{
-        printf("FAILED D:\n");
+        //printf("FAILED D:\n");
         return 0;
     }
 }
