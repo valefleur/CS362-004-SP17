@@ -4,8 +4,8 @@
  * Spring 2017
  *
  * Assignment 4: Random Tester
- * randomtestcard2.c
- * int playVillage(struct gameState *state, int handPos)
+ * randomtestcard1.c
+ * int playSmithy(struct gameState *state, int handPos)
  */
  
 #include "dominion.h"
@@ -16,7 +16,7 @@
 #include "rngs.h"
 #include <stdlib.h>
 
-#define UNDERTEST "playVillage()"
+#define UNDERTEST "playSmithy()"
 #define TEST_ITERATIONS 10000
 
 int main(){
@@ -54,6 +54,7 @@ int main(){
     int i = 0;
     int n = 0;
     int x = 0;
+    int p = 0;
     int handPos;
     int test[4];
     int quantityTests = sizeof(test)/sizeof(test[0]);
@@ -61,7 +62,10 @@ int main(){
     int aTestFailed[quantityTests];
     int deckLocation = 0;
     int card = 0;
-    int discarded;
+    int discarded = -1;
+    //int newCards = 0;
+    int originalDeckCount;
+    int originalDiscardCount;
     
     //make sure all variables are initialized--don't use at end
     //initializeGame(numPlayers, kingdom, seed, &gs);    
@@ -84,11 +88,12 @@ int main(){
 
         gs.whoseTurn = floor(Random() * MAX_PLAYERS);
         currentPlayer = gs.whoseTurn;
-        gs.deckCount[currentPlayer] = floor(Random() * MAX_DECK) +1; //shift probability to a small number to exercise shuffling
+        //gs.deckCount[currentPlayer] = 0;
+        gs.deckCount[currentPlayer] = floor(Random() * MAX_DECK); //shift probability to a small number to exercise shuffling
         gs.handCount[currentPlayer] = floor(Random() * MAX_HAND);
-        gs.discardCount[currentPlayer] = floor(Random() * MAX_DECK)+1;
+        gs.discardCount[currentPlayer] = floor(Random() * MAX_DECK);
         handPos = floor(Random() * gs.handCount[currentPlayer]);
-        gs.numActions = floor(Random() * 5); //some reasonable number of actions
+        gs.numActions = floor(Random() * 5);
         gs.playedCardCount = floor(Random() * MAX_DECK);
         
         /*force deckCount to be small sometimes
@@ -96,33 +101,36 @@ int main(){
 /*         if(i < TEST_ITERATIONS/10){
             gs.deckCount[currentPlayer] = floor(Random() * 5);
         } */
-        
-        /*for the current player only, set DECK to be real cards*/
-        for(deckLocation = 0; deckLocation < gs.deckCount[currentPlayer]; deckLocation++){
-            card = floor(Random() * 26); //any card in game
-            gs.deck[currentPlayer][deckLocation] = card;
-            //printf("A %d was shoved into player %d's DECK at position %d.\n", card, currentPlayer, deckLocation);
-        }
-        
-        /*for the current player only, set DISCARD to be real cards, in case we have to shuffle*/
-        for(deckLocation = 0; deckLocation < gs.discardCount[currentPlayer]; deckLocation++){
-            card = floor(Random() * 26); //any card in game
-            gs.discard[currentPlayer][deckLocation] = card;
-            //printf("A %d was shoved into player %d's DISCARD at position %d.\n", card, currentPlayer, deckLocation);
-        }
-        
-        
-        /*for the current player only, set the HAND to be real cards*/
-        for(deckLocation = 0; deckLocation < gs.handCount[currentPlayer]; deckLocation++){
-            if(deckLocation == handPos){ //put a village card in at handPos
-                card = village;
+        /*Give all players semi-realistic decks, discards and hands*/
+        for(p=0; p<MAX_PLAYERS; p++){
+            /*for player p, set DECK to be real cards*/
+            for(deckLocation = 0; deckLocation < gs.deckCount[p]; deckLocation++){
+                card = floor(Random() * 27); //any card in game
+                gs.deck[p][deckLocation] = card;
+                //printf("A %d was shoved into player %d's DECK at position %d.\n", card, p, deckLocation);
             }
-            else{   
-                card = floor(Random() * 26); //any card in game
-             }
-            gs.hand[currentPlayer][deckLocation] = card;
-            //printf("A %d was shoved into player %d's HAND at position %d.\n", card, currentPlayer, deckLocation);
+            
+            /*for player p, set DISCARD to be real cards, in case we have to shuffle*/
+            for(deckLocation = 0; deckLocation < gs.discardCount[p]; deckLocation++){
+                card = floor(Random() * 27); //any card in game
+                gs.discard[p][deckLocation] = card;
+                //printf("A %d was shoved into player %d's DISCARD at position %d.\n", card, p, deckLocation);
+            }
+            
+            
+            /*for player p, set the HAND to be real cards*/
+            for(deckLocation = 0; deckLocation < gs.handCount[p]; deckLocation++){
+                if(p == currentPlayer && deckLocation == handPos){ //put a village card in the currentPlayer's hand at handPos
+                    card = smithy;
+                }
+                else{   
+                    card = floor(Random() * 27); //any card in game
+                 }
+                gs.hand[p][deckLocation] = card;
+                //printf("A %d was shoved into player %d's HAND at position %d.\n", card, p, deckLocation);
+            }    
         }
+        
         
         
         /*Copy after making random inputs*/
@@ -134,23 +142,32 @@ int main(){
             
             
         /*Call function under test*/
-        playVillage(&gs, handPos);
+        PlaySmitty(&gs, handPos);
         
         
         /*Oracle Code*/
         
-        // 0. Current player removes 1 card from deck        
-        //printf("Deck count before playing village: %d, deck count after playing village: %d.\n", testGS.deckCount[currentPlayer], gs.deckCount[currentPlayer]);
-        testGS.deckCount[currentPlayer] = testGS.deckCount[currentPlayer] - 1;
+        // 0. Current player removes 3 cards from deck        
+        //printf("Deck count before playing smithy: %d, deck count after playing smithy: %d.\n", testGS.deckCount[currentPlayer], gs.deckCount[currentPlayer]);
+        originalDeckCount = testGS.deckCount[currentPlayer];
+        originalDiscardCount = testGS.discardCount[currentPlayer];
+        if(testGS.deckCount[currentPlayer] < 3){
+            int y = 0;
+            for(y=0; y<testGS.discardCount[currentPlayer]; y++){
+                testGS.deck[currentPlayer][y] = testGS.discard[currentPlayer][y];
+                testGS.discard[currentPlayer][y] = -1;
+            }
+            testGS.deckCount[currentPlayer] = testGS.discardCount[currentPlayer] + originalDeckCount;
+            testGS.discardCount[currentPlayer] = 0;
+        }    
+        testGS.deckCount[currentPlayer] = testGS.deckCount[currentPlayer] - 3;
         
-        // 1. Current player discards Village card
+        // 1. Current player adds 3 cards to hand, and discards Smithy
+        testGS.handCount[currentPlayer] = testGS.handCount[currentPlayer] + 2;
+
+        // 2. Current player discards Smithy card
         discarded = testGS.discard[currentPlayer][testGS.discardCount[currentPlayer]-1];
         //printf("Discarded card is %d\n", discarded);
-
-        // 2. Current player gets 2 additional actions
-        //printf("Originally, current player had %d actions.  After playing village, she has %d actions.\n", testGS.numActions, gs.numActions);
-        //NOTE: Due to intentional bug, gs.numActions will be set to gs.coins, which was poorly initialized because it wasn't supposed to be part of playVillage()
-        testGS.numActions = testGS.numActions + 2;
         
         // 3. No other player's Dominion is affected
         
@@ -159,29 +176,29 @@ int main(){
         /*Assert actual and expected*/
         for(testNum = 0; testNum < quantityTests; testNum++){
             switch (testNum){
-                case 0:  // 0. Current player removes 1 card from deck
+                case 0:  // 0. Current player removes 3 cards from deck 
                     test[testNum] = my_assert(gs.deckCount[currentPlayer], testGS.deckCount[currentPlayer]);
                     if(!test[testNum]){
+                        //printf("Interation: %d, Whose Turn: %d, Original Deck Count: %d, Current Deck Count: %d, Hand Count: %d, Discard Count: %d, handPos: %d\n", i, gs.whoseTurn, originalDeckCount, gs.deckCount[currentPlayer], gs.handCount[currentPlayer], gs.discardCount[currentPlayer], handPos);
+                        //printf("Interation: %d, Original Deck Count: %d, Current Deck Count: %d, Original Discard Count: %d, Discard Count: %d\n", i, originalDeckCount, gs.deckCount[currentPlayer], originalDiscardCount, gs.discardCount[currentPlayer]);
                         //printf("Test %d FAILED during iteration %d.\n", testNum, i);
-                        //printf("Interation: %d, Whose Turn: %d, Deck Count: %d, Hand Count: %d, Discard Count: %d, handPos: %d\n", i, gs.whoseTurn, gs.deckCount[currentPlayer], gs.handCount[currentPlayer], gs.discardCount[currentPlayer], handPos);
-                        //printf("The player actually has a deck count of %d, where we expected %d.\n", gs.deckCount[currentPlayer], testGS.deckCount[currentPlayer]);
+                        //printf("The player actually has a deck count of %d, where we expected %d.\n\n", gs.deckCount[currentPlayer], testGS.deckCount[currentPlayer]);
                         aTestFailed[testNum]++;
                     }
                     break;
-                case 1:  // 1. Current player discards Village card
+                case 1:  // 1. Current player adds 3 cards to hand, and discards Smithy
+                    test[testNum] = my_assert(gs.handCount[currentPlayer], testGS.handCount[currentPlayer]);
+                    if(!test[testNum]){
+                        //printf("Test %d FAILED during iteration %d.\n", testNum, i);
+                        //printf("The hand count is %d, where we expected %d.\n\n", gs.handCount[currentPlayer], testGS.handCount[currentPlayer]);
+                        aTestFailed[testNum]++;
+                    }
+                    break;
+                case 2:  // 2. Current player discards Smithy card
                     test[testNum] = my_assert(gs.discard[currentPlayer][gs.discardCount[currentPlayer]-1], discarded);
                     if(!test[testNum]){
                         //printf("Test %d FAILED during iteration %d.\n", testNum, i);
-                        //printf("The discarded card is %d, where we expected %d.\n\n", gs.discard[currentPlayer][gs.discardCount[currentPlayer]-1], discarded);
-                        //printf("The discarded card is %d, where we expected %d (which should be 14).\n\n", gs.discard[currentPlayer][gs.discardCount[currentPlayer]-1], discarded);
-                        aTestFailed[testNum]++;
-                    }
-                    break;
-                case 2:  // 2. Current player gets 2 additional actions
-                    test[testNum] = my_assert(gs.numActions, testGS.numActions);
-                    if(!test[testNum]){
-                        //printf("Test %d FAILED during iteration %d.\n", testNum, i);
-                        //printf("The current player's number of actions is %d, where we expected %d.\n", gs.numActions, testGS.numActions);
+                        //printf("The discarded card is %d, where we expected %d (which should be 13).\n\n", gs.discard[currentPlayer][gs.discardCount[currentPlayer]-1], discarded);
                         aTestFailed[testNum]++;
                     }
                     break;
@@ -223,7 +240,8 @@ int main(){
         else{
             printf("Test %d PASSED! :D\n", testNum);
         }
-    }  
+    }     
+    
     printf("Executed %d tests %d times.\n", quantityTests, TEST_ITERATIONS);
     printf("---------- COMPLETED Testing: %s ----------\n\n\n", UNDERTEST);
     

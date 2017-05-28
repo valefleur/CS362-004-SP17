@@ -84,9 +84,9 @@ int main(){
 
         gs.whoseTurn = floor(Random() * MAX_PLAYERS);
         currentPlayer = gs.whoseTurn;
-        gs.deckCount[currentPlayer] = floor(Random() * MAX_DECK) +1; //shift probability to a small number to exercise shuffling
+        gs.deckCount[currentPlayer] = floor(Random() * MAX_DECK); //shift probability to a small number to exercise shuffling
         gs.handCount[currentPlayer] = floor(Random() * MAX_HAND);
-        gs.discardCount[currentPlayer] = floor(Random() * MAX_DECK)+1;
+        gs.discardCount[currentPlayer] = floor(Random() * MAX_DECK);
         handPos = floor(Random() * gs.handCount[currentPlayer]);
         gs.numActions = floor(Random() * 5); //some reasonable number of actions
         gs.playedCardCount = floor(Random() * MAX_DECK);
@@ -134,7 +134,7 @@ int main(){
             
             
         /*Call function under test*/
-        playVillage(&gs, handPos);
+        PlayVillage(&gs, handPos);
         
         
         /*Oracle Code*/

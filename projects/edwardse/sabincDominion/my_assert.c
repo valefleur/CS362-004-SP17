@@ -23,7 +23,7 @@ int my_assert(int first, int second){
         return 1;
     }
     else{
-        //printf("FAILED D: First: %d & Second: %d\n", first, second);
+        //printf("FAILED D:\n");
         return 0;
     }
 }

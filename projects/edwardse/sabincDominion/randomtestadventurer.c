@@ -100,9 +100,9 @@ int main(){
         /*Give all players semi-realistic decks, discards and hands*/
         count = 0;
         for(p=0; p<MAX_PLAYERS; p++){
-            gs.deckCount[p] = floor(Random() * MAX_DECK)+1; //shift probability to a small number to exercise shuffling
-            gs.handCount[p] = floor(Random() * MAX_HAND)+1;
-            gs.discardCount[p] = floor(Random() * MAX_DECK)+1;
+            gs.deckCount[p] = floor(Random() * MAX_DECK); //shift probability to a small number to exercise shuffling
+            gs.handCount[p] = floor(Random() * MAX_HAND);
+            gs.discardCount[p] = floor(Random() * MAX_DECK);
             
             /*for player p, set DECK to be real cards*/
             for(deckLocation = 0; deckLocation < gs.deckCount[p]; deckLocation++){ //add treasures to deck, randomly
@@ -151,7 +151,7 @@ int main(){
         } */
             
         /*Call function under test*/
-        playAdventurer(&gs);
+        PlayAdventurer(&gs);
         
         /*Oracle Code*/
         // 0. Current player has two additional treasures
@@ -174,9 +174,7 @@ int main(){
                 case 0:  // 0. The current player's hand increases by 2
                     test[testNum] = my_assert(gs.handCount[currentPlayer], testGS.handCount[currentPlayer]);
                     if(!test[testNum]){
-/*                         printf("Test %d FAILED during iteration %d.\n", testNum, i);
-                        printf("gs.handCount[currentPlayer] is: %d\n", gs.handCount[currentPlayer]);
-                        printf("testGS.handCount[currentPlayer] is: %d\n", testGS.handCount[currentPlayer]); */
+                        //printf("Test %d FAILED during iteration %d.\n", testNum, i);
                         aTestFailed[testNum]++;
                     }
                     break;
@@ -184,9 +182,7 @@ int main(){
                 case 1:  // 1. The total of (deckCount + discardCount) has dropped by 2
                     test[testNum] = my_assert( (gs.deckCount[currentPlayer] + gs.discardCount[currentPlayer] + 2) , (deckSize + discardSize) );
                     if(!test[testNum]){
-/*                         printf("Test %d FAILED during iteration %d.\n", testNum, i);
-                        printf("gs.deckCount[currentPlayer] + gs.discardCount[currentPlayer] + 2 is: %d\n", gs.deckCount[currentPlayer] + gs.discardCount[currentPlayer] + 2);
-                        printf("deckSize + discardSize is: %d\n", deckSize + discardSize); */
+                        //printf("Test %d FAILED during iteration %d.\n", testNum, i);
                         aTestFailed[testNum]++;
                     }
                     break;
@@ -205,12 +201,12 @@ int main(){
                         }
                     }
                     if(!test[testNum]){
-/*                         printf("Test %d FAILED during iteration %d.\n", testNum, i);
-                        printf("test[2]: %d\n", test[2]);
-                        printf("my_assert(gs.handCount[x], testGS.handCount[x]): %d\n", my_assert(gs.handCount[x], testGS.handCount[x]));
-                        printf("my_assert(gs.deckCount[x], testGS.deckCount[x]): %d\n", my_assert(gs.deckCount[x], testGS.deckCount[x]));
-                        printf("my_assert(gs.discardCount[x], testGS.discardCount[x]): %d\n", my_assert(gs.discardCount[x], testGS.discardCount[x]));
-                        printf("Interation: %d, Whose Turn: %d, Deck Count: %d, Hand Count: %d, Discard Count: %d\n\n\n", i, gs.whoseTurn, gs.deckCount[currentPlayer], gs.handCount[currentPlayer], gs.discardCount[currentPlayer]); */
+                        //printf("Test %d FAILED during iteration %d.\n", testNum, i);
+                        //printf("test[2]: %d\n\n\n", test[2]);
+                        //printf("my_assert(gs.handCount[x], testGS.handCount[x]): %d\n", my_assert(gs.handCount[x], testGS.handCount[x]));
+                        //printf("my_assert(gs.deckCount[x], testGS.deckCount[x]): %d\n", my_assert(gs.deckCount[x], testGS.deckCount[x]));
+                        //printf("my_assert(gs.discardCount[x], testGS.discardCount[x]): %d\n", my_assert(gs.discardCount[x], testGS.discardCount[x]));
+                        //printf("Interation: %d, Whose Turn: %d, Deck Count: %d, Hand Count: %d, Discard Count: %d\n", i, gs.whoseTurn, gs.deckCount[currentPlayer], gs.handCount[currentPlayer], gs.discardCount[currentPlayer]);
                         aTestFailed[testNum]++;
                     }
                     break;
