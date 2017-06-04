@@ -1,3 +1,5 @@
+This is the submission for Shae Judge (judges), Adina Edwards (edwardse), and Chavis Sabin (sabinc).
+
 Final Project:
 
 Part-A: Due date is  Sunday, May 14th at 11:59pm
