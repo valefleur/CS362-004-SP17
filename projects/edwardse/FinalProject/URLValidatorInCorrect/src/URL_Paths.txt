@@ -1,0 +1,15 @@
+/test1 true
+/t123 true
+/$23 true
+/.. false
+/../ false
+/test1/ true
+/# false
+/test1/file true
+/t123/file true
+/$23/file true
+/../file false
+/..//file false
+/test1//file true
+/#/file false
+/file.txt true

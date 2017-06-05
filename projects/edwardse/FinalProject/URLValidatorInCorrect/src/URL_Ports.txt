@@ -1,0 +1,11 @@
+:80 true
+:65535 true
+:0 true
+:-1 false
+:65636 true
+:65a false
+;8080 false
+;80 false
+80 false
+:505 true
+:8080 true

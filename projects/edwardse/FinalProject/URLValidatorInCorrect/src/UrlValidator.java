@@ -147,15 +147,15 @@ public class UrlValidator implements Serializable {
 
     private static final String PATH_REGEX = "^(/[-\\w:@&?=+,.!/~*'%$_;\\(\\)]*)?$";
     private static final Pattern PATH_PATTERN = Pattern.compile(PATH_REGEX);
-    
+
     private static final String QUERY_REGEX = "^(.*)$";
-    
+
     private static final Pattern QUERY_PATTERN = Pattern.compile(QUERY_REGEX);
 
     private static final String LEGAL_ASCII_REGEX = "^\\p{ASCII}+$";
     private static final Pattern ASCII_PATTERN = Pattern.compile(LEGAL_ASCII_REGEX);
 
-    private static final String PORT_REGEX = "^:(\\d{1,3})$";
+    private static final String PORT_REGEX = "^:(\\d{1,3})$";//possible bug CS
     private static final Pattern PORT_PATTERN = Pattern.compile(PORT_REGEX);
 
     /**
@@ -269,7 +269,7 @@ public class UrlValidator implements Serializable {
         this.authorityValidator = authorityValidator;
 
     }
-
+    //CS Function Starts Here
     /**
      * <p>Checks if a field has a valid url address.</p>
      *
@@ -278,6 +278,8 @@ public class UrlValidator implements Serializable {
      * @return true if the url is valid.
      */
     public boolean isValid(String value) {
+    	
+    	
         if (value == null) {
             return false;
         }
@@ -443,7 +445,7 @@ public class UrlValidator implements Serializable {
             return true;
         }
         
-        return !QUERY_PATTERN.matcher(query).matches();
+        return !QUERY_PATTERN.matcher(query).matches();//Possible Bug CS
     }
 
     /**

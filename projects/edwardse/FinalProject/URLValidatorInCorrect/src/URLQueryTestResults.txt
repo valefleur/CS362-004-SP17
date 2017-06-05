@@ -1,0 +1,2 @@
+http://www.google.com?action=view 			FAIL: expected true, received false
+http://www.google.com?action=edit&mode=up 			FAIL: expected true, received false

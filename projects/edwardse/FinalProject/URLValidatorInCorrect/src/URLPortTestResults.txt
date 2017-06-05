@@ -1,0 +1,11 @@
+http://www.google.com:80 			PASS: expected true, received true
+http://www.google.com:65535 			FAIL: expected true, received false
+http://www.google.com:0 			PASS: expected true, received true
+http://www.google.com:-1 			PASS: expected false, received false
+http://www.google.com:65636 			FAIL: expected true, received false
+http://www.google.com:65a 			PASS: expected false, received false
+http://www.google.com;8080 			PASS: expected false, received false
+http://www.google.com;80 			PASS: expected false, received false
+http://www.google.com80 			PASS: expected false, received false
+http://www.google.com:505 			PASS: expected true, received true
+http://www.google.com:8080 			FAIL: expected true, received false
