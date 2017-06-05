@@ -1,0 +1,2 @@
+?action=view true
+?action=edit&mode=up true

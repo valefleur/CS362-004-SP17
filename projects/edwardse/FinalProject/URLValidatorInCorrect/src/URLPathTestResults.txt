@@ -1,0 +1,15 @@
+http://www.google.com/test1 			PASS: expected true, received true
+http://www.google.com/t123 			PASS: expected true, received true
+http://www.google.com/$23 			PASS: expected true, received true
+http://www.google.com/.. 			PASS: expected false, received false
+http://www.google.com/../ 			PASS: expected false, received false
+http://www.google.com/test1/ 			PASS: expected true, received true
+http://www.google.com/# 			FAIL: expected false, received true
+http://www.google.com/test1/file 			PASS: expected true, received true
+http://www.google.com/t123/file 			PASS: expected true, received true
+http://www.google.com/$23/file 			PASS: expected true, received true
+http://www.google.com/../file 			PASS: expected false, received false
+http://www.google.com/..//file 			PASS: expected false, received false
+http://www.google.com/test1//file 			FAIL: expected true, received false
+http://www.google.com/#/file 			FAIL: expected false, received true
+http://www.google.com/file.txt 			PASS: expected true, received true

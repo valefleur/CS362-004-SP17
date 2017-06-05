@@ -1,0 +1,17 @@
+https://www.google.com is a valid URL
+https://///www.google.com  is not a valid URL
+test://test.test.test is not a valid URL
+http://www.google.org is a valid URL
+file:///C:/Users/chavi/Downloads/FinalProject%20(1).pdf is a valid URL
+http://pandora.com
+http://www.pandora.com
+asdf://asdf.asdf.asdf
+http://www.pando%ra.com
+http://example.com/file[/].html
+http://
+http:
+https://blakdjalskdjflasdf.org
+http://www.google.com:123
+http://www.google.com:12345
+http://www.example.com:8080/path/
+http://www.example.com:808/path/
