@@ -21,3 +21,10 @@ aaa false
 999.999.999.999 false
 chav.uk true
 www.google.uk true
+www.google.co.uk true
+10101100110110010001100111100100 false
+www.googledotcom false
+. false
+oregonstate.edu true
+www.iuj.ac.jp true
+sydney.edu.au true
